@@ -3,34 +3,19 @@ package com.example.campusconnect
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
-import com.example.campusconnect.ui.theme.CampusConnectTheme
+import android.content.Intent
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
-        setContent {
-            CampusConnectTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize()
-                ) { innerPadding ->
+        setContentView(R.layout.activity_main)
+        val signupText = findViewById<android.widget.TextView>(R.id.signupText)
 
-                    Box(
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
-                        HomeScreen()
-                    }
-                }
-            }
+        signupText.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 }
