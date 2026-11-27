@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import android.widget.EditText
 import android.widget.Button
+import com.google.firebase.auth.FirebaseAuth
+import android.widget.Toast
 
 class RegisterActivity : ComponentActivity() {
 
@@ -13,6 +15,8 @@ class RegisterActivity : ComponentActivity() {
 
         //displays register screen
         setContentView(R.layout.activity_register)
+        val auth = FirebaseAuth.getInstance()
+
 
         //XML fields
         val nameInput = findViewById<EditText>(R.id.nameInput)
@@ -53,6 +57,16 @@ class RegisterActivity : ComponentActivity() {
                 passwordInput.error = "Password must be at least 6 characters"
                 return@setOnClickListener
             }
+
+            // Sends email and password to Firebase
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "Account created successfully", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
 
         val backToLoginText =
