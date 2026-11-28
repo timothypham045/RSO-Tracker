@@ -27,7 +27,7 @@ data class RSOEvent(
 )
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onLogout: () -> Unit) {
 
     var selectedEvent by remember {
         mutableStateOf<RSOEvent?>(null)
@@ -252,6 +252,16 @@ fun HomeScreen() {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("My Organizations & Meetings")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Allows the user to log out
+            OutlinedButton(
+                onClick = onLogout,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Log Out")
             }
 
             Spacer(modifier = Modifier.height(24.dp))
