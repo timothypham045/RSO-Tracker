@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Button
 import com.google.firebase.auth.FirebaseAuth
 import android.widget.Toast
+import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : ComponentActivity() {
 
@@ -16,6 +17,9 @@ class RegisterActivity : ComponentActivity() {
         //displays register screen
         setContentView(R.layout.activity_register)
         val auth = FirebaseAuth.getInstance()
+
+        // Initializes the Firestore database
+        val db = FirebaseFirestore.getInstance()
 
 
         //XML fields
@@ -62,7 +66,26 @@ class RegisterActivity : ComponentActivity() {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "Account created successfully", Toast.LENGTH_SHORT).show()
+
+                        // Retrieves the user's unique ID
+                        val userId = auth.currentUser!!.uid
+
+                        // Stores the user's profile information
+                        val userProfile = hashMapOf(
+                            "name" to name,
+                            "email" to email
+                        )
+
+                        // Saves the user profile to Firestore
+                        db.collection("users").document(userId)
+                            .set(userProfile)
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Account created successfully", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Failed to save user profile", Toast.LENGTH_SHORT).show()
+                            }
+
                     } else {
                         Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()
                     }

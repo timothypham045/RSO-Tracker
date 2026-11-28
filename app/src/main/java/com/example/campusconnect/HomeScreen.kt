@@ -27,7 +27,7 @@ data class RSOEvent(
 )
 
 @Composable
-fun HomeScreen(onLogout: () -> Unit) {
+fun HomeScreen(userName: String, onLogout: () -> Unit) {
 
     var selectedEvent by remember {
         mutableStateOf<RSOEvent?>(null)
@@ -216,6 +216,12 @@ fun HomeScreen(onLogout: () -> Unit) {
             )
 
             Spacer(modifier = Modifier.height(8.dp))
+
+            // Displays a personalized greeting for the logged-in user
+            Text(
+                text = "Welcome, $userName!",
+                style = MaterialTheme.typography.titleMedium
+            )
 
             Text(
                 text = "Discover what's happening on campus!",
